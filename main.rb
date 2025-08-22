@@ -34,7 +34,7 @@ end
 def encrypt(chunk, key)
   cipher = OpenSSL::Cipher.new("aes-256-cbc")
   cipher.encrypt
-  cipher.key = [key].pack("H*")
+  cipher.key = Digest::SHA256.digest(key)
   iv = cipher.random_iv
 
   encrypted = cipher.update(chunk) + cipher.final
@@ -44,7 +44,7 @@ end
 def decrypt(chunk, key)
   decipher = OpenSSL::Cipher.new("aes-256-cbc")
   decipher.decrypt
-  decipher.key = [key].pack("H*")
+  decipher.key = Digest::SHA256.digest(key)
 
   iv = chunk[0,16]
   ciphertext = chunk[16..]
@@ -93,7 +93,7 @@ def listener(port, file, is_encrypted=false, key=nil)
 end
 
 # The client attempts to send a file to the receiver using the given parameters
-def sender(address, port, file, is_encrypted=false, key="")
+def sender(address, port, file, is_encrypted=false, key=nil)
   puts HEADER
   puts "Sending #{file} to #{address}:#{port}"
 
@@ -118,7 +118,7 @@ def sender(address, port, file, is_encrypted=false, key="")
 
     rescue => e
       socket.write("ERROR")
-      raise "An error happened while sending the file"
+      raise e
 
     end
   rescue => e
