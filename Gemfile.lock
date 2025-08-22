@@ -5,6 +5,7 @@ GEM
     digest (3.2.0)
     openssl (3.3.0)
     optparse (0.6.0)
+    securerandom (0.4.1)
 
 PLATFORMS
   x64-mingw-ucrt
@@ -14,6 +15,7 @@ DEPENDENCIES
   digest
   openssl
   optparse
+  securerandom
 
 BUNDLED WITH
    2.6.9

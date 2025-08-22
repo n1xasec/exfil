@@ -5,6 +5,7 @@ require 'digest'
 require 'optparse'
 require 'openssl'
 require 'base64'
+require "securerandom"
 
 HEADER = "=======EXFIL======="
 SEPARATOR = "==================="
