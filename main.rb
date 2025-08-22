@@ -86,7 +86,6 @@ def listener(port, file, is_encrypted=false)
     puts SEPARATOR
   rescue => e
     puts "Error: #{e.message}"
-  ensure client.close
   end
 end
 
