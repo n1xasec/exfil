@@ -55,13 +55,15 @@ def decrypt(chunk, key)
 end
 
 # Sets up a listener using the given parameters
-def listener(port, file, is_encrypted=false)
+def listener(port, file, is_encrypted=false, key=nil)
   begin
     puts HEADER
     server = TCPServer.new(port)
 
     if is_encrypted
-      key = SecureRandom.hex(32)
+      if !key
+        key = SecureRandom.hex(32)
+      end
       puts "Key: " + key
     end
 
@@ -135,7 +137,11 @@ begin
       raise OptionParser::MissingArgument, "listen requires --port and --file"
     end
     if options[:encrypt]
-      listener(options[:port], options[:file], options[:encrypt])
+      if options[:key]
+        listener(options[:port], options[:file], options[:encrypt], options[:key])
+      else
+        listener(options[:port], options[:file], options[:encrypt])
+      end
     else
       listener(options[:port], options[:file])
     end
